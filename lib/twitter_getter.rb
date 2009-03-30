@@ -12,7 +12,7 @@ class Tweet
   end
   
   def get_val(a)
-    @attributes[a] || @attributes[a.to_s]
+    @attributes[a] || @attributes[a.to_s] || @attributes[a.to_sym]
   end
   
   def [](a)
@@ -20,17 +20,25 @@ class Tweet
   end
   
   def method_missing(m)
-    val = get_val(m)
-    super if val.nil? 
-    val
+    if val = get_val(m)
+      return val
+    elsif @attributes.respond_to?(m)
+      return @attributes.send(m)
+    else
+      super
+    end
   end
 
+end
+
+class User
+  
 end
 
 class Tweets
   
   def initialize(h)
-    
+    h
   end
   
 end
