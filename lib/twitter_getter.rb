@@ -2,46 +2,16 @@ require 'rubygems'
 require 'cgi'
 require 'rest_client'
 require 'json/pure'
+require 'twitter_getter/promiscuous_struct'
 
 class Tweet
-
-  attr_reader :attributes
-  
-  def initialize(h)
-    @attributes = h
-  end
-  
-  def get_val(a)
-    @attributes[a] || @attributes[a.to_s] || @attributes[a.to_sym]
-  end
-  
-  def [](a)
-   get_val(a)
-  end
-  
-  def method_missing(m)
-    if val = get_val(m)
-      return val
-    elsif @attributes.respond_to?(m)
-      return @attributes.send(m)
-    else
-      super
-    end
-  end
-
+  include PromiscuousStruct
 end
 
 class User
-  
+  include PromiscuousStruct 
 end
 
-class Tweets
-  
-  def initialize(h)
-    h
-  end
-  
-end
 
 class TwitterGetter
 
@@ -68,7 +38,7 @@ class TwitterGetter
     raise AuthenicationNeeded if @password.nil?
     begin
       u = JSON.parse(RestClient.post("http://#{@user}:#{@password}@twitter.com/friendships/destroy/#{id}.json", :id => id))
-      u['status'] ? u : nil
+      u['status'] ? User.new(u) : nil
     rescue RestClient::RequestFailed => e
       p e
       nil
@@ -79,7 +49,7 @@ class TwitterGetter
     raise AuthenicationNeeded if @password.nil?
     begin
       u = JSON.parse(RestClient.post("http://#{@user}:#{@password}@twitter.com/friendships/create/#{id}.json", :id => id))
-      u['status'] ? u : nil
+      u['status'] ? User.new(u) : nil
     rescue RestClient::RequestFailed => e
       p e
       nil
@@ -91,22 +61,42 @@ class TwitterGetter
   end
   
   def search(term, opts = {})
+    if opts[:max_pages]
+      max_pages = opts[:max_pages]
+      opts.delete(:max_pages)
+    end
     term = CGI.escape(term)
     opts = {
       :since_id => 10,
-      :max_pages => 1
+      :rpp => 50
     }.merge(opts)
-    p opts[:since_id]
-    tweets = JSON.parse(RestClient.get("http://search.twitter.com/search.json?q=#{term}&rpp=50&since_id=#{opts[:since_id]}"))['results']
+    params = hash2params(opts)
+    tweets = []
+    JSON.parse(RestClient.get("http://search.twitter.com/search.json?q=#{term}#{params}"))['results'].each do |t|
+      tweets << Tweet.new(t)
+    end
     results = tweets.size
     page = 2
-    while results == 50 && page <= opts[:max_pages].to_i
-      next_tweets = JSON.parse(RestClient.get("http://search.twitter.com/search.json?q=#{term}&rpp=50&since_id=#{opts[:since_id]}&page=#{page}"))['results']
+    while results == 50 && page <= max_pages.to_i
+      next_tweets = JSON.parse(RestClient.get("http://search.twitter.com/search.json?q=#{term}#{params}&page=#{page}"))['results']
       results = next_tweets.size
-      tweets += next_tweets
+      next_tweets.each do |t|
+        tweets << Tweet.new(t)
+      end
       page += 1
     end
     tweets.reverse
   end
+
+private
+  
+  def hash2params(hash)
+    params = ''
+    hash.each_pair do |k,v|
+      params += "&#{k}=#{CGI.escape(v.to_s)}"
+    end
+    params
+  end
+
 
 end

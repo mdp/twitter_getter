@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = '1.3.1'
   s.summary = 'simple Twitter API wrapper'
 
-  s.add_dependency(%q<hpricot>, [">= 0.6"])
+  s.add_dependency(%q<rest_client>, [">= 0.9"])
+  s.add_dependency(%q<json_pure>, [">= 1.1.3"])
 
 end
