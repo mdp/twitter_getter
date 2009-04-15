@@ -4,7 +4,7 @@ describe TwitterGetter do
   
   
   before :all do
-    @tg = TwitterGetter.new
+    @tg = TwitterGetter::Base.new
   end
   
   it "should find all location based tweets" do
