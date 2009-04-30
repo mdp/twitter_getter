@@ -6,7 +6,12 @@ module PromiscuousStruct
   end
   
   def get_val(a)
-    @attributes[a] || @attributes[a.to_s] || @attributes[a.to_sym]
+    val = @attributes[a] || @attributes[a.to_s] || @attributes[a.to_sym]
+    if val.is_a?(Hash)
+      self.class.new(val)
+    else
+      val
+    end
   end
   
   def [](a)

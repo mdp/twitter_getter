@@ -1,0 +1,4 @@
+---
+  # Just rename this to test_account.yaml to run the specs
+user: testaccount
+password: secret

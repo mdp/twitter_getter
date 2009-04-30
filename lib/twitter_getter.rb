@@ -22,6 +22,25 @@ module TwitterGetter
       @user = user
       @password = password
     end
+    
+    def update_status(message, in_reply_to_status_id = nil)
+      raise AuthenicationNeeded if @password.nil?
+      t = JSON.parse(RestClient.post("http://#{@user}:#{@password}@twitter.com/statuses/update.json", 
+                 :status => message,
+                 :in_reply_to_status_id => in_reply_to_status_id))
+      Tweet.new(t)
+    end
+    
+    def destroy_status(id)
+      raise AuthenicationNeeded if @password.nil?
+      t = JSON.parse(RestClient.post("http://#{@user}:#{@password}@twitter.com/statuses/destroy/#{id}.json", :id => id))
+      Tweet.new(t)
+    end
+    
+    def status(id)
+      t = JSON.parse(RestClient.get("http://twitter.com/statuses/show/#{id}.json"))
+      Tweet.new(t)
+    end
 
     def friend_ids
       JSON.parse(RestClient.get("http://twitter.com/friends/ids/#{self.user}.json"))
