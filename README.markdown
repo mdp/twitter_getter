@@ -1,5 +1,9 @@
 # TwitterGetter - A simple Twitter API gem
 
+## Installation
+
+    sudo gem install markpercival-twittergetter --sources http://gems.github.com
+
 ## Usage
   
     @tg = TwitterGetter::Base.new('ev', 'password')
