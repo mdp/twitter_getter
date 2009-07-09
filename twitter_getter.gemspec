@@ -1,5 +1,5 @@
-# -*- encoding: utf-8 -*-
 
+# -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = %q{twitter_getter}
   s.version = "1.0.6"

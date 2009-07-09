@@ -2,7 +2,7 @@
 
 ## Installation
 
-    sudo gem install markpercival-twittergetter --sources http://gems.github.com
+    sudo gem install markpercival-twitter_getter --sources http://gems.github.com
 
 ## Usage
   
