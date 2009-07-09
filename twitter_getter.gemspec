@@ -1,21 +1,47 @@
+# -*- encoding: utf-8 -*-
+
 Gem::Specification.new do |s|
   s.name = %q{twitter_getter}
-  s.version = "1.0.4"
+  s.version = "1.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Mark Percival"]
-  s.date = '2009-04-29'
-  s.description = 'Twitter API wrapper - super simple'
-  s.email = 'mark@markpercival.us'
-  s.files = Dir['lib/**/*.rb'] + Dir['spec/**/*.rb'] + ['README.markdown']
-  # s.extra_rdoc_files = ["History.txt", "License.txt", "Manifest.txt", "README.txt"]
+  s.date = %q{2009-07-09}
+  s.email = %q{mark@mpercival.com}
+  s.extra_rdoc_files = [
+    "README.markdown"
+  ]
+  s.files = [
+    ".gitignore",
+     "README.markdown",
+     "lib/twitter_getter.rb",
+     "lib/twitter_getter/promiscuous_struct.rb",
+     "spec/destroy_spec.rb",
+     "spec/spec_helper.rb",
+     "spec/test_account.sample.yaml",
+     "spec/tweet_spec.rb",
+     "spec/twitter_getter_spec.rb"
+  ]
   s.has_rdoc = true
-  s.homepage = 'http://projects.markpercival.us/twitter_getter'
+  s.homepage = %q{http://github.com/markpercival/twitter_getter}
+  s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = '1.3.1'
-  s.summary = 'simple Twitter API wrapper'
+  s.rubygems_version = %q{1.3.1}
+  s.summary = %q{TwitterGetter - The Twitter API Wrapper}
+  s.test_files = [
+    "spec/destroy_spec.rb",
+     "spec/spec_helper.rb",
+     "spec/tweet_spec.rb",
+     "spec/twitter_getter_spec.rb"
+  ]
 
-  s.add_dependency(%q<rest-client>, [">= 0.9"])
-  s.add_dependency(%q<json_pure>, [">= 1.1.3"])
+  if s.respond_to? :specification_version then
+    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
+    s.specification_version = 2
 
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    else
+    end
+  else
+  end
 end

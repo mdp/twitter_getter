@@ -1,17 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 require 'yaml'
 
-
-  def unauthenticate_twitter
-    TwitterGetter::Base.new
-  end
-  
-  def authenticated_twitter
-    auth = YAML.load(File.open(File.dirname(__FILE__) + '/test_account.yaml'))
-    TwitterGetter::Base.new(auth['user'], auth['password'])
-  end
-
-
 describe TwitterGetter, "GeoIP search" do
   
   

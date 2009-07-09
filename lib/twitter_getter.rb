@@ -59,8 +59,8 @@ module TwitterGetter
       begin
         u = JSON.parse(RestClient.post("http://#{@user}:#{@password}@twitter.com/friendships/destroy/#{id}.json", :id => id))
         u['status'] ? User.new(u) : nil
-      rescue RestClient::RequestFailed => e
-        p e
+      rescue RestClient::ResourceNotFound => e
+        p "Error - #{e}" 
         nil
       end
     end
@@ -70,8 +70,8 @@ module TwitterGetter
       begin
         u = JSON.parse(RestClient.post("http://#{@user}:#{@password}@twitter.com/friendships/create/#{id}.json", :id => id))
         u['status'] ? User.new(u) : nil
-      rescue RestClient::RequestFailed => e
-        p e
+      rescue RestClient::ResourceNotFound => e
+        p "Error - #{e}" 
         nil
       end
     end
